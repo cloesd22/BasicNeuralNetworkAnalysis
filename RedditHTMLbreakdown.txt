@@ -1,0 +1,29 @@
+https://www.reddit.com/r/GameDeals/comments/6jmeq3/steam_summer_sale_2017_day_5/
+Div structure:
+
+Usertext strings:
+		div.thing
+			div.entry
+				form.usertext
+					div.usertext-body
+						div.md
+						   all text elements in here
+
+Username strings:
+		div.thing
+			div.entry
+				p.tagline
+					a.author::text
+						
+
+Upvote strings:
+		div.thing
+			div.entry
+				p.tagline
+					span.score (3rd)
+							
+
+
+Child:
+		div.thing
+			div.child
