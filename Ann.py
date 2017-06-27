@@ -12,7 +12,8 @@ import matplotlib as mtpltlib
 import pandas as pd
 
 
-#Data pre-processing
+#Data pre-processing=====================================================
+
 #Import data set up X and Y variables
 dataset = pd.read_csv('sampledata.csv',encoding = "ISO-8859-1")
 X = dataset.iloc[:,2:7]
@@ -33,7 +34,28 @@ sc_X = StandardScaler()
 sc_Y = StandardScaler()
 X_train=sc.fit_transform(X_train)
 X_test=sc.transform(X_test)
-Y_train=sc.fit_transform(Y_train)
-Y_test=sc.transform(Y_test)
+Y_train=sc_Y.fit_transform(Y_train)
+Y_test=sc_Y.fit(Y_train)
+
+#Data pre-processing=====================================================
 
 
+
+#Building ANN Structure==================================================
+import keras
+from keras.models import Sequential
+from keras.layers import Dense
+
+classifier = Sequential()
+
+classifier.add(Dense(output_dim=4,init='uniform',activation='relu',input_dim=5))
+classifier.add(Dense(output_dim=4,init='uniform',activation='relu'))
+classifier.add(Dense(output_dim=1,init='uniform',activation='sigmoid'))
+
+classifier.compile(optimizer='rmsprop',loss='binary_crossentropy',metrics=['accuracy'])
+classifier.fit(X_train,Y_train,batch_size=10, epochs=500)
+
+
+#Building ANN Structure==================================================
+for layer in classifier.layers:
+    weights=layer.get_weights()
