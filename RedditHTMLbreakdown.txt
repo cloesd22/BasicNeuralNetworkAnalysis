@@ -27,3 +27,5 @@ Upvote strings:
 Child:
 		div.thing
 			div.child
+
+response.xpath('string(.//div[contains(@class,"")]/)')

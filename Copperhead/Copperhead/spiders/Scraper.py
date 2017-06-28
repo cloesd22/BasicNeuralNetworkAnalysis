@@ -6,6 +6,7 @@ Created on Tue Jun 27 20:52:35 2017
 """
 
 import scrapy
+import re
 
 
 
@@ -14,7 +15,7 @@ import scrapy
 class ScrapSniffer(scrapy.Spider):
     #declare name
     name="postSniffer"
-    
+       
     #declare method start_requests
     def start_requests(self):
     #declare url
@@ -27,14 +28,24 @@ class ScrapSniffer(scrapy.Spider):
     def parse(self,response):
         
         for post in response.css('div.nestedlisting div.thing'):
+            
+            username = post.css('div.entry p.tagline a.author::text').extract()
+            usertext = post.css('div.entry form.usertext div.usertext-body div.md p::text').extract()
+            upvotes = post.css('div.entry p.tagline span.score::attr(title)').extract_first()
+            
+            
+            usertextstring = ' '.join(usertext)
+            usertextstringlist = re.findall("(\S+)",usertextstring)
+            wordcount = len(usertextstringlist)
           
-            yield {'username': post.css('div.entry p.tagline a.author::text').extract(),
-                   'usertext': post.css('div.entry form.usertext div.usertext-body div.md p::text').extract(),
-                   'upvotes': post.css('div.entry p.tagline span.score::attr(title)').extract_first()
+            yield {'username': username,
+                   'usertext': usertext,
+                   'upvotes': upvotes,
+                   'wordcount': wordcount
                    }
             
                     
-                    
+                    #('div.nestedlisting div.thing:nth-child(1) div.entry form.usertext div.usertext-body div.md p::text').extract()
             
          #For each element
         #list element
