@@ -10,6 +10,7 @@ sys.path.insert(0, "E:\SnakeGarden\Copperhead\Copperhead\Copperhead")
 
 import pprint
 import scrapy
+from scrapy.spiders import CrawlSpider
 import re
 import bs4 as bs
 import urllib.request
@@ -19,10 +20,21 @@ import stringworkshop
 
 #Scrapy
 #declare class
-class ScrapSniffer(scrapy.Spider):
-
+class ScrapSniffer(CrawlSpider):
+    #declare name
     name="postSniffer"
-
+    #declare url from which to scrape
+    urlsoup = 'https://www.reddit.com/r/GameDeals/comments/6jmeq3/steam_summer_sale_2017_day_5/'
+    #Load website into beautiful soup
+    sauce = urllib.request.urlopen(urlsoup).read()
+    #create beautiful soup object
+    soup = bs.BeautifulSoup(sauce,'lxml')
+    #import string workshop library
+    from stringworkshop import stringworkshop as sws
+    start_urls = ['https://www.reddit.com/r/GameDeals/comments/6jmeq3/steam_summer_sale_2017_day_5/']
+    allowed_domains = ['https://www.reddit.com/r/GameDeals/comments/6jmeq3/steam_summer_sale_2017_day_5/']
+   
+    
     #declare method start_requests
     def start_requests(self):
     #declare url
@@ -31,17 +43,14 @@ class ScrapSniffer(scrapy.Spider):
         yield scrapy.Request(url=url,callback=self.parse)
         
 
-    def parse(self,response):
+    def parse_item(self,response):
     ##==========================================================================
-    ##Section pulls the data from the website using 
-        from stringworkshop import stringworkshop as sws
-        urlsoup = 'https://www.reddit.com/r/GameDeals/comments/6jmeq3/steam_summer_sale_2017_day_5/'
-        sauce = urllib.request.urlopen(urlsoup).read()
-        soup = bs.BeautifulSoup(sauce,'lxml')
+    ##Section pulls the data from the website using soup
+      
         for postbody in soup.find_all('div',class_='nestedlisting'):
             
-           # for postblock in postbody.find_all('div',class_='thing comment'):
-             for postblock in postbody.select('div.thing.comment'):   
+            for postblock in postbody.find_all('div',class_='thing'):
+                
                 #Gets post author
                 try:
                     author=(postblock.find('div',class_='entry unvoted',recursive=False).find('p',class_='tagline').find('a',class_='author').string)
