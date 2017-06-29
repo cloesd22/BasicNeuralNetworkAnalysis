@@ -15,12 +15,12 @@ import pandas as pd
 
 #Data Preprocessing
 #===============================================
-dataset = pd.read_csv('Copperhead/spiders/rawdata.csv')
-X = dataset.iloc[:,2:6]
-Y = dataset.iloc[:,7]
+dataset = pd.read_csv('data.csv')
+X = dataset.iloc[:,2:7]
+Y = dataset.iloc[:,8]
 
 from sklearn.model_selection import train_test_split
-X_train,X_test,Y_train,Y_test=train_test_split(X,Y,test_size=0.2,random_state=0)
+X_train,X_test,Y_train,Y_test=train_test_split(X,Y,test_size=0.1,random_state=1)
 
 
 from sklearn.preprocessing import StandardScaler
@@ -45,25 +45,26 @@ from sklearn.model_selection import GridSearchCV
 
 def Build_Ann():
     classifier = Sequential()
-    classifier.add(Dense(output_dim=5,init='uniform',activation='relu',input_dim=4))
-    classifier.add(Dense(output_dim=5,init='uniform',activation='relu'))
-    classifier.add(Dense(output_dim=5,init='uniform',activation='relu'))
+    classifier.add(Dense(output_dim=10,init='uniform',activation='relu',input_dim=5))
+    classifier.add(Dense(output_dim=7,init='uniform',activation='relu'))
+    classifier.add(Dense(output_dim=4,init='uniform',activation='relu'))
     classifier.add(Dense(output_dim=1,init='uniform',activation='sigmoid'))
-    classifier.compile(optimizer='adamax',loss='binary_crossentropy',metrics=['accuracy'])
+    classifier.compile(optimizer='adam',loss='binary_crossentropy',metrics=['accuracy'])
     return classifier
 
-#classifier = KerasClassifier(build_fn=Build_Ann,epochs=100,batch_size=10,verbose=1)
+#classifier = KerasClassifier(build_fn=Build_Ann,epochs=500,batch_size=25,verbose=1)
 #accuracies = cross_val_score(estimator=classifier,X=X_train,y=Y_train,n_jobs=1,cv=10)
 #mean=accuracies.mean()
 #variance = accuracies.std()
-#    
+##    
 classifier = Build_Ann()
-classifier.fit(X_train,Y_train,epochs=100000,batch_size= 10)
-X_sampletest = np.array([[41,1,0,2]])
-Y_sampletestpred = classifier.predict(X_sampletest)
+classifier.fit(X_train,Y_train,batch_size= 10,epochs=1000)
+#X_sampletest = np.array([[41,1,0,2]])
+Y_sampletestpred = classifier.predict(X_test)
+Y_sampletestpred = (Y_sampletestpred>0.2)
 
-
+#
 from sklearn.metrics import confusion_matrix
-cm = confusion_matrix(Y_train, Y_sampletestpred)    
-        
+cm = confusion_matrix(Y_test, Y_sampletestpred)    
+#        
 

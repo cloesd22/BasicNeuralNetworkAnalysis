@@ -6,7 +6,7 @@ Created on Tue Jun 27 20:52:35 2017
 """
 
 import sys
-sys.path.insert(0, "E:\SnakeGarden\Copperhead\Copperhead\Copperhead")
+sys.path.insert(0, "E:\SnakeGarden\CustomClasses\stringworkshop")
 
 import pprint
 import scrapy
@@ -75,6 +75,7 @@ class ScrapSniffer(scrapy.Spider):
                 thecount = sws.wordfreq("the",s)
                 Icount = sws.wordfreq("I",s)
                 andcount = sws.wordfreq("and",s)
+                avgwlength = sws.avgwordlength(s)
                 
                 yield{'author':author,
                        'usertext':s,
@@ -82,6 +83,7 @@ class ScrapSniffer(scrapy.Spider):
                        'thecount':thecount,
                        'Icount':Icount,
                        'andcount':andcount,
+                       'avgwl':avgwlength,
                        'upvotes':upvote
                         }
                         
