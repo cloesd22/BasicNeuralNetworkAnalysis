@@ -1,0 +1,14 @@
+Basics behind the project was to import data on a reddit page all comments, usernames, and votes.
+The scraper was succesful at this, however opening up the "load more comments" sections requires javascript manipulation that the scraper doesnt address.
+In the future using a reddit python suite to achieve the scraping makes it easier. (API called praw)
+
+The data is passed and manually edited a bit in the CSV (Empty lines as a result of anaconda on windows are deleted, and upvotes are turned into a value of 1 or 0 based of if upvote
+are greater than average number).
+
+This is a bit for future optimization.
+
+The data then is put into the neural network that implements a basic classifier to fidn a relationship between variables and wehther upvotes are greater than average.
+The neurla network was not able to find too strong of a relationship, only approaching 50-60% accuracy with a wide variance.
+
+Future testing might be to confirm if the system works for a simple XOR gate and do a bit more work on validating our methodology.
+
