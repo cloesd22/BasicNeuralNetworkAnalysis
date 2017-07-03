@@ -7,13 +7,14 @@ Created on Tue Jun 27 20:52:35 2017
 
 import sys
 sys.path.insert(0, "E:\SnakeGarden\CustomClasses\stringworkshop")
-
+sys.path.insert(0, "E:\SnakeGarden\Copperhead\Copperhead\Copperhead")
 import pprint
 import scrapy
 import re
 import bs4 as bs
 import urllib.request
 import stringworkshop
+from items import comment
 
 
 
@@ -77,6 +78,19 @@ class ScrapSniffer(scrapy.Spider):
                 andcount = sws.wordfreq("and",s)
                 avgwlength = sws.avgwordlength(s)
                 
+                
+                commentexport = comment(
+                        
+                                author=scrapy.Field(),
+                                usertext=scrapy.Field(),
+                                thecount=scrapy.Field(),
+                                icount=scrapy.Field(),
+                                andcount=scrapy.Field(),
+                                avgwl=scrapy.Field(),
+                                upvote=scrapy.Field()
+                        
+                                )
+                
                 yield{'author':author,
                        'usertext':s,
                        'wordcount':wordcount,
@@ -87,13 +101,7 @@ class ScrapSniffer(scrapy.Spider):
                        'upvotes':upvote
                         }
                         
-                        #               testing strings                
-                        #                print(author+" "+upvote)
-                        #                print(s)
-                        #                print(wordcount)
-                        #                print(thecount)
-                        #                print(Icount)
-                        #                print(andcount)
+                
       ##========================================================================          
 
 
